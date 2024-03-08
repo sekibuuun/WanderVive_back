@@ -1,7 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"WanderVive_back/pkg/routes"
+	"log"
+	"net/http"
+)
 
 func main() {
-	fmt.Println("Hello, World!!")
+	routes.Router()
+	log.Fatal(http.ListenAndServe("localhost:8080", nil))
 }
