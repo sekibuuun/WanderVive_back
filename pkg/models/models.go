@@ -1,33 +1,33 @@
 package models
 
 type Event struct {
-	eventId     int    `json:"eventId"`
-	eventName   string `json:"eventName"`
-	livehouseId int    `json:"livehouseId"`
-	bandId      []int  `json:"bandId"`
-	eventDate   string `json:"eventDate"`
-	openTime    string `json:"openTime"`
-	startTime   string `json:"startTime"`
-	fee         int    `json:"fee"`
+	EventId     int    `json:"eventId"`
+	EventName   string `json:"eventName"`
+	LivehouseId int    `json:"livehouseId"`
+	BandId      []int  `json:"bandId"`
+	EventDate   string `json:"eventDate"`
+	OpenTime    string `json:"openTime"`
+	StartTime   string `json:"startTime"`
+	Fee         int    `json:"fee"`
 }
 
 type Livehouse struct {
-	livehouseId   int     `json:"livehouseId"`
-	livehouseName string  `json:"livehouseName"`
-	longitude     float64 `json:"longitude"`
-	latitude      float64 `json:"latitude"`
-	homePage      string  `json:"homePage"`
-	mapLink       string  `json:"mapLink"`
+	LivehouseId   int     `json:"livehouseId"`
+	LivehouseName string  `json:"livehouseName"`
+	Longitude     float64 `json:"longitude"`
+	Latitude      float64 `json:"latitude"`
+	HomePage      string  `json:"homePage"`
+	MapLink       string  `json:"mapLink"`
 }
 
 type Band struct {
-	bandId    int    `json:"bandId"`
-	bandName  string `json:"bandName"`
-	gerne     string `json:"gerne"`
-	youtube   string `json:"youtube"`
-	instagram string `json:"instagram"`
-	twitter   string `json:"twitter"`
-	tunecore  string `json:"tunecore"`
-	homePage  string `json:"homePage"`
-	image     string `json:"image"`
+	BandId    int    `json:"bandId"`
+	BandName  string `json:"bandName"`
+	Genre     string `json:"gerne"`
+	Youtube   string `json:"youtube"`
+	Instagram string `json:"instagram"`
+	Twitter   string `json:"twitter"`
+	Tunecore  string `json:"tunecore"`
+	HomePage  string `json:"homePage"`
+	Image     string `json:"image"`
 }
