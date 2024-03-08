@@ -2,45 +2,79 @@ package databases
 
 import (
 	"WanderVive_back/pkg/models"
+	"database/sql"
+	"log"
 )
 
-func GetBand() models.Band {
-	test_band := models.Band{
-		BandId:    1,
-		BandName:  "サンプルバンド",
-		Genre:     "ロック",
-		Youtube:   "https://www.youtube.com/channel/UCxxxxxxxx",
-		Instagram: "https://www.instagram.com/sampleband",
-		Twitter:   "https://twitter.com/sampleband",
-		Tunecore:  "https://www.tunecore.com/artists/sampleband",
-		HomePage:  "https://www.sampleband.com",
-		Image:     "https://example.com/sampleband.jpg",
-	}
-	return test_band
+type Service struct {
+	DB *sql.DB
 }
 
-func GetLivehouse() models.Livehouse {
-	test_livehouse := models.Livehouse{
-		LivehouseId:   1,
-		LivehouseName: "サンプルライブハウス",
-		Longitude:     123.456,
-		Latitude:      78.90,
-		HomePage:      "https://www.samplelivehouse.com",
-		MapLink:       "https://www.google.com/maps/place/サンプルライブハウス",
+func (svc *Service) GetBand() []models.Band {
+	rows, err := svc.DB.Query("SELECT * FROM band;")
+	if err != nil {
+		log.Fatal(err)
 	}
-	return test_livehouse
+	bands := make([]models.Band, 0)
+	for rows.Next() {
+		var band models.Band
+		if err := rows.Scan(&band.BandId, &band.BandName, &band.Genre, &band.Youtube, &band.Twitter, &band.Instagram, &band.Tunecore, &band.HomePage, &band.Image); err != nil {
+			log.Fatal(err)
+		}
+		bands = append(bands, band)
+	}
+	return bands
 }
 
-func GetEvent() models.Event {
-	test_event := models.Event{
-		EventId:     1,
-		EventName:   "サンプルイベント",
-		LivehouseId: 1,
-		BandId:      []int{1},
-		EventDate:   "2022-01-01",
-		OpenTime:    "12:00",
-		StartTime:   "13:00",
-		Fee:         2000,
+func (svc *Service) GetLivehouse() []models.Livehouse {
+	rows, err := svc.DB.Query("SELECT * FROM livehouse;")
+	if err != nil {
+		log.Fatal(err)
 	}
-	return test_event
+	livehouses := make([]models.Livehouse, 0)
+	for rows.Next() {
+		var livehouse models.Livehouse
+		if err := rows.Scan(&livehouse.LivehouseId, &livehouse.LivehouseName, &livehouse.Latitude, &livehouse.Longitude, &livehouse.HomePage, &livehouse.MapLink); err != nil {
+			log.Fatal(err)
+		}
+		livehouses = append(livehouses, livehouse)
+	}
+	return livehouses
+}
+
+func (svc *Service) GetEvent() []models.Event {
+	rows, err := svc.DB.Query("SELECT * FROM event;")
+	if err != nil {
+		log.Fatal(err)
+	}
+	events := make([]models.Event, 0)
+	for rows.Next() {
+		var event models.Event
+		if err := rows.Scan(&event.EventId, &event.EventName, &event.LivehouseId, &event.EventDate, &event.OpenTime, &event.StartTime, &event.Fee); err != nil {
+			log.Fatal(err)
+		}
+		events = append(events, event)
+	}
+	paticipants := svc.getPaticipants(len(events))
+	for i, e := range paticipants {
+		events[i].BandIdList = e
+	}
+	return events
+}
+
+func (svc *Service) getPaticipants(eventNum int) [][]int {
+	paticipants := make([][]int, eventNum)
+	rows, err := svc.DB.Query("SELECT eventId, bandId FROM paticipant;")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for rows.Next() {
+		var eventId int
+		var bandId int
+		if err := rows.Scan(&eventId, &bandId); err != nil {
+			log.Fatal(err)
+		}
+		paticipants[eventId-1] = append(paticipants[eventId-1], bandId)
+	}
+	return paticipants
 }
