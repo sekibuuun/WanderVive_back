@@ -8,10 +8,10 @@ import (
 	"net/http"
 )
 
-func BandHandler(w http.ResponseWriter, r *http.Request) {
+func LivehouseHandler(w http.ResponseWriter, r *http.Request) {
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
-	if err := enc.Encode(databases.GetBand()); err != nil {
+	if err := enc.Encode(databases.GetLivehouse()); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
