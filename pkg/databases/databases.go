@@ -14,7 +14,7 @@ func GetBand() models.Band {
 		Twitter:   "https://twitter.com/sampleband",
 		Tunecore:  "https://www.tunecore.com/artists/sampleband",
 		HomePage:  "https://www.sampleband.com",
-		Image:     "https://example.com/sampleband.jpg",
+		Image:     "../../images/sampleband.png",
 	}
 	return test_band
 }
