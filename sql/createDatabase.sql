@@ -34,7 +34,7 @@ CREATE TABLE event (
     foreign key (livehouseId) REFERENCES livehouse(livehouseId)
 );
 
-create table paticipant (
+CREATE TABLE paticipant (
     Id serial not null,
     eventId integer not null,
     bandId integer not null,
