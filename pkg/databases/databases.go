@@ -78,3 +78,38 @@ func (svc *Service) getPaticipants(eventNum int) [][]int {
 	}
 	return paticipants
 }
+
+func (svc *Service) GetEventAndLivehouse() []models.EventAndLivehouse {
+	rows, err := svc.DB.Query("SELECT * FROM event NATURAL INNER JOIN livehouse;")
+	if err != nil {
+		log.Fatal(err)
+	}
+	eventAndLivehouseList := make([]models.EventAndLivehouse, 0)
+	for rows.Next() {
+		var eventAndLivehouse models.EventAndLivehouse
+		if err := rows.Scan(&eventAndLivehouse.LivehouseId, &eventAndLivehouse.EventId, &eventAndLivehouse.EventName, &eventAndLivehouse.EventDate, &eventAndLivehouse.StartTime, &eventAndLivehouse.OpenTime, &eventAndLivehouse.Fee, &eventAndLivehouse.LivehouseName, &eventAndLivehouse.Longitude, &eventAndLivehouse.Latitude, &eventAndLivehouse.HomePage, &eventAndLivehouse.MapLink); err != nil {
+			log.Fatal(err)
+		}
+		eventAndLivehouseList = append(eventAndLivehouseList, eventAndLivehouse)
+	}
+	paticipants := svc.getPaticipants(len(eventAndLivehouseList))
+	for i, eventPaticipant := range paticipants {
+		var bandList []models.Band
+		for _, paticipant := range eventPaticipant {
+			bandList = append(bandList, svc.GetCertainBand(paticipant))
+		}
+		eventAndLivehouseList[i].BandList = bandList
+	}
+
+	return eventAndLivehouseList
+}
+
+func (svc *Service) GetCertainBand(id int) models.Band {
+	log.Println(id)
+	row := svc.DB.QueryRow("SELECT * FROM band WHERE bandId = $1", id)
+	var band models.Band
+	if err := row.Scan(&band.BandId, &band.BandName, &band.Genre, &band.Youtube, &band.Twitter, &band.Instagram, &band.Tunecore, &band.HomePage, &band.Image); err != nil {
+		log.Fatal(err)
+	}
+	return band
+}
