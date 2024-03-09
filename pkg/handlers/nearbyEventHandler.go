@@ -30,9 +30,7 @@ func haversineDistance(lat1 float64, lon1 float64, lat2 float64, lon2 float64) f
 }
 
 func isNear(currentCoordinate [2]float64, livehouseCoordinate [2]float64, maxDist float64) bool {
-	log.Println(currentCoordinate[1], currentCoordinate[0], livehouseCoordinate[0], livehouseCoordinate[1])
-	log.Println(haversineDistance(currentCoordinate[1], currentCoordinate[0], livehouseCoordinate[0], livehouseCoordinate[1]))
-	return maxDist >= haversineDistance(currentCoordinate[1], currentCoordinate[0], livehouseCoordinate[0], livehouseCoordinate[1])
+	return maxDist >= haversineDistance(convertRad(currentCoordinate[1]), convertRad(currentCoordinate[0]), convertRad(livehouseCoordinate[0]), convertRad(livehouseCoordinate[1]))
 }
 
 func filterNear(events []models.EventAndLivehouse, date string, currentCoordinate [2]float64, maxDist float64) []models.EventAndLivehouse {
