@@ -18,8 +18,8 @@ type EventResponse struct {
 type Livehouse struct {
 	LivehouseId   int     `json:"livehouseId"`
 	LivehouseName string  `json:"livehouseName"`
-	Longitude     float64 `json:"longitude"`
-	Latitude      float64 `json:"latitude"`
+	Longitude     float64 `json:"latitude"`
+	Latitude      float64 `json:"longitude"`
 	HomePage      string  `json:"homePage"`
 	MapLink       string  `json:"mapLink"`
 }
@@ -42,4 +42,24 @@ type Band struct {
 
 type BandResponse struct {
 	Contents []Band `json:"contents"`
+}
+
+type EventAndLivehouse struct {
+	EventId       int     `json:"eventId"`
+	EventName     string  `json:"eventName"`
+	EventDate     string  `json:"eventDate"`
+	OpenTime      string  `json:"openTime"`
+	StartTime     string  `json:"startTime"`
+	Fee           int     `json:"fee"`
+	LivehouseId   int     `json:"livehouseId"`
+	LivehouseName string  `json:"livehouseName"`
+	Longitude     float64 `json:"latitude"`
+	Latitude      float64 `json:"longitude"`
+	HomePage      string  `json:"homePage"`
+	MapLink       string  `json:"mapLink"`
+	BandList      []Band  `json:"bands"`
+}
+
+type NearbyEventResponse struct {
+	Contents []EventAndLivehouse `json:"contents"`
 }
