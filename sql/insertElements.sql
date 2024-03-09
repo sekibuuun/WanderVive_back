@@ -6,6 +6,6 @@ INSERT INTO livehouse (livehouseName, longitude, latitude, homePage) VALUES('The
 INSERT INTO livehouse (livehouseName, longitude, latitude, homePage) VALUES('Divine Cathedral', 35.0237009, 135.7579916, 'https://divinecathedral.xyz');
 INSERT INTO livehouse (livehouseName, longitude, latitude, homePage) VALUES ('Groove Foundry', 35.0172265, 135.7590776, 'https://groovefoundry.xyz');
 
-INSERT INTO event (eventName, livehouseId, bandIdList, eventDate ,openTime, startTime, fee) VALUES ('夜空の耀き', 2, '{1, 2}', '2023-03-15' ,'18:00', '21:00', 2000);
-INSERT INTO event (eventName, livehouseId, bandIdList, eventDate ,openTime, startTime, fee) VALUES ('絶唱の宴', 3, '{2, 3}', '2023-03-11' ,'15:00', '18:00', 2200);
-INSERT INTO event (eventName, livehouseId, bandIdList, eventDate ,openTime, startTime, fee) VALUES ('混沌の咆哮', 1, '{1, 3}', '2023-03-20' ,'16:00', '19:00', 2500);
+INSERT INTO event (eventName, livehouseId,  eventDate ,openTime, startTime, fee) VALUES ('夜空の耀き', 2, '2023-03-15' ,'18:00', '21:00', 2000);
+INSERT INTO event (eventName, livehouseId,  eventDate ,openTime, startTime, fee) VALUES ('絶唱の宴', 3, '2023-03-11' ,'15:00', '18:00', 2200);
+INSERT INTO event (eventName, livehouseId,  eventDate ,openTime, startTime, fee) VALUES ('混沌の咆哮', 1, '2023-03-20' ,'16:00', '19:00', 2500);
