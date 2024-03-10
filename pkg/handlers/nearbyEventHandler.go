@@ -14,6 +14,16 @@ import (
 	_ "github.com/lib/pq"
 )
 
+func filterDate(events []models.EventAndLivehouse, date string) []models.EventAndLivehouse {
+	var res []models.EventAndLivehouse
+	for _, e := range events {
+		if e.EventDate == date {
+			res = append(res, e)
+		}
+	}
+	return res
+}
+
 func convertRad(degree float64) float64 {
 	rad := (degree / 180) * math.Pi
 
@@ -76,7 +86,7 @@ func NearbyEventHandler(w http.ResponseWriter, r *http.Request) {
 
 	enc := json.NewEncoder(&buf)
 	events := svc.GetEventAndLivehouse()
-
+	events = filterDate(events, date)
 	res := models.NearbyEventResponse{
 		Contents: filterNear(events, date, currentCoordinate, maxDist),
 	}
