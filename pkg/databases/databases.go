@@ -79,7 +79,7 @@ func (svc *Service) getPaticipants(eventNum int) [][]int {
 	return paticipants
 }
 
-func (svc *Service) GetEventAndLivehouse() []models.EventAndLivehouse {
+/*func (svc *Service) GetEventAndLivehouse() []models.EventAndLivehouse {
 	rows, err := svc.DB.Query("SELECT * FROM event NATURAL INNER JOIN livehouse;")
 	if err != nil {
 		log.Fatal(err)
@@ -112,4 +112,40 @@ func (svc *Service) GetCertainBand(id int) models.Band {
 		log.Fatal(err)
 	}
 	return band
+}
+*/
+
+func (svc *Service) GetEventAndLivehouse(date string) []models.EventAndLivehouse {
+	var eventAndLivehouseList = make([]models.EventAndLivehouse, 0)
+
+	elrows, err := svc.DB.Query("select * from event natural inner join livehouse where eventdate = $1", date)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for elrows.Next() {
+		var eventAndLivehouse models.EventAndLivehouse
+		var bands = make([]models.Band, 0)
+		if err := elrows.Scan(&eventAndLivehouse.LivehouseId, &eventAndLivehouse.EventId, &eventAndLivehouse.EventName, &eventAndLivehouse.EventDate, &eventAndLivehouse.OpenTime, &eventAndLivehouse.StartTime, &eventAndLivehouse.Fee, &eventAndLivehouse.LivehouseName, &eventAndLivehouse.Longitude, &eventAndLivehouse.Latitude, &eventAndLivehouse.HomePage, &eventAndLivehouse.MapLink); err != nil {
+			log.Fatal(err)
+		}
+		prows, err := svc.DB.Query("select bandid from paticipant where eventId = $1", eventAndLivehouse.EventId)
+		if err != nil {
+			log.Fatal(err)
+		}
+		for prows.Next() {
+			var band models.Band
+			if err := prows.Scan(&band.BandId); err != nil {
+				log.Fatal(err)
+			}
+			brow := svc.DB.QueryRow("select bandname, genre, youtube, twitter, instagram, tunecore, homepage, imagepath from band where bandid = $1", band.BandId)
+			if err != brow.Scan(&band.BandName, &band.Genre, &band.Youtube, &band.Twitter, &band.Instagram, &band.Tunecore, &band.HomePage, &band.Image) {
+				log.Fatal(err)
+			}
+			bands = append(bands, band)
+		}
+		eventAndLivehouse.BandList = bands
+		eventAndLivehouseList = append(eventAndLivehouseList, eventAndLivehouse)
+
+	}
+	return eventAndLivehouseList
 }

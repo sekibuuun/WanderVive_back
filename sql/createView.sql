@@ -1,0 +1,1 @@
+create view elp as select * from (select * from event natural inner join livehouse)e natural inner join (select * from eventAndLivehouse natural inner join paticipant) el;

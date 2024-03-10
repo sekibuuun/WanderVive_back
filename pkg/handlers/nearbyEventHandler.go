@@ -85,8 +85,8 @@ func NearbyEventHandler(w http.ResponseWriter, r *http.Request) {
 	var buf bytes.Buffer
 
 	enc := json.NewEncoder(&buf)
-	events := svc.GetEventAndLivehouse()
-	events = filterDate(events, date)
+	events := svc.GetEventAndLivehouse(date)
+	//events = filterDate(events, date)
 	res := models.NearbyEventResponse{
 		Contents: filterNear(events, date, currentCoordinate, maxDist),
 	}
